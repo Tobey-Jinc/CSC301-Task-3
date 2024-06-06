@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./
+      target: dev
+    volumes:
+      - .:/src
+    command: npm run start:dev
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://some-postgres@postgres/some-postgres
+      POSTGRES_PASSWORD: password
+      NODE_ENV: development
+      DEBUG: nodejs-docker-express:*
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: codes
